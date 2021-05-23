@@ -1,13 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.4 <0.9.0;
 
-import "./ownable.sol"; 
-import "./traceabilitycontract.sol";
-import "./tracehelper.sol";
+import "./Ownable.sol"; 
+import "./TraceabilityContract.sol";
+import "./TraceHelper.sol";
 
-contract ProductContract is Ownable {
-
-    TraceHelper helper;
+contract ProductContract is Ownable, TraceHelper {
 
     event NewProduct(string barcode, uint randId);
     event NewTrace(string barcode, string lotId, uint expirationDate);
@@ -44,7 +42,7 @@ contract ProductContract is Ownable {
         TraceabilityContract traceContract = new TraceabilityContract(_barcode, _lotId, _expirationDate, _jsonData);
 
         if(_expirationDate > 0){
-            string memory value = string(abi.encodePacked(_barcode, helper.uint2str(_expirationDate)));
+            string memory value = string(abi.encodePacked(_barcode, uint2str(_expirationDate)));
             expirationDateContracts[value] = address(traceContract);
         }
 
@@ -94,7 +92,7 @@ contract ProductContract is Ownable {
         address contractAddress = address(0);
         require(_expirationDate > 0 || keccak256(abi.encodePacked(_lotId)) != keccak256(abi.encodePacked("")), 'Expiration Date or Lot Id must be provided.');
         if(_expirationDate > 0){
-            string memory value = string(abi.encodePacked(_barcode, helper.uint2str(_expirationDate)));
+            string memory value = string(abi.encodePacked(_barcode, uint2str(_expirationDate)));
             contractAddress = expirationDateContracts[value];            
         }
         else if(keccak256(abi.encodePacked(_lotId)) != keccak256(abi.encodePacked(""))) {

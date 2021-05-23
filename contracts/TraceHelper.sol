@@ -3,7 +3,7 @@ pragma solidity >=0.5.0 <0.9.0;
 
 contract TraceHelper {
 
-    function uint2str(uint256 _i) external pure returns (string memory str) {
+    function uint2str(uint256 _i) public pure returns (string memory str) {
         if (_i == 0){
             return "0";
         }
